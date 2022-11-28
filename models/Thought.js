@@ -22,7 +22,7 @@ const ReactionSchema = new Schema({
     type: Date,
     default: Date.now,
 
-    get: (createdAtVal) => dateFormat(createdAtVal),
+    get: (timestamp) => dateFormat(timestamp),
   },
 },
 {
@@ -44,7 +44,7 @@ const ThoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      get: (createdAtVal) => dateFormat(createdAtVal),
+      get: (timestamp) => dateFormat(timestamp),
     },
 
     username: {

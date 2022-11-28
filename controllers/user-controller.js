@@ -70,9 +70,17 @@ const userController = {
   //   BONUS: Remove a user's associated thoughts when deleted.
   deleteUser({ params }, res) {
     User.findOneAndDelete({ _id: params.id })
-      .then((dbUserData) => res.json(dbUserData))
-      .catch((err) => res.json(err));
-  },
+    .then((dbUserData) => {
+      if (!dbUserData) {
+        return res.status(404).json({ message: "No user with this id!" });
+      }
+      return Thought.deleteMany({ _id: { $in: dbUserData.thoughts } });
+    })
+    .then(() => {
+      res.json({ message: "User and associated thoughts deleted!" });
+    })
+    .catch((err) => res.json(err));
+},
 
   // add friend
   addFriend({ params }, res) {
@@ -98,9 +106,14 @@ const userController = {
       { $pull: { friends: params.friendId } },
       { new: true }
     )
-      .then((dbUserData) => res.json(dbUserData))
-      .catch((err) => res.json(err));
-  },
+    .then((dbUserData) => {
+      if (!dbUserData) {
+        return res.status(404).json({ message: "No user with this id!" });
+      }
+      res.json(dbUserData);
+    })
+    .catch((err) => res.json(err));
+},
 };
 
 module.exports = userController;
