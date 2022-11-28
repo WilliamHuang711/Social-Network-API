@@ -67,8 +67,7 @@ const userController = {
   },
 
   // delete user
-  //   BONUS: Remove a user's associated thoughts when deleted.
-  deleteUser({ params }, res) {
+    deleteUser({ params }, res) {
     User.findOneAndDelete({ _id: params.id })
     .then((dbUserData) => {
       if (!dbUserData) {
